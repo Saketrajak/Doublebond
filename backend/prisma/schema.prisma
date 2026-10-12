@@ -1,0 +1,378 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+  TUTOR
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING
+  SUSPENDED
+  INACTIVE
+}
+
+enum VerificationStatus {
+  UNVERIFIED
+  VERIFIED
+  REJECTED
+}
+
+enum BookingStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id              String             @id @default(cuid())
+  email           String             @unique
+  phone           String?
+  name            String
+  role            UserRole           @default(USER)
+  permissions     String[]           @default([])
+  passwordHash    String?
+  authProvider    String             @default("local")
+  status          UserStatus         @default(PENDING)
+  verified        Boolean            @default(false)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  parentProfile   ParentProfile?
+  studentProfile  StudentProfile?
+  tutorProfile    TutorProfile?
+  sentMessages    Message[]          @relation("SentMessages")
+  receivedMessages Message[]         @relation("ReceivedMessages")
+  reviewsWritten  Review[]           @relation("UserReviews")
+  consentAudits   ConsentAudit[]
+}
+
+model ParentProfile {
+  id              String             @id @default(cuid())
+  userId          String             @unique
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country         String?
+  timezone        String?
+  preferences     Json?
+  marketingConsent Boolean           @default(false)
+  students        StudentProfile[]
+}
+
+model StudentProfile {
+  id              String             @id @default(cuid())
+  userId          String?            @unique
+  user            User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  parentId        String?
+  parent          ParentProfile?     @relation(fields: [parentId], references: [id], onDelete: SetNull)
+  name            String
+  grade           String
+  curriculum      String?
+  country         String?
+  timezone        String?
+  learningGoals   String?
+  createdAt       DateTime           @default(now())
+
+  bookings        Booking[]
+  progressRecords Progress[]
+  tutorMatches    TutorMatch[]
+}
+
+model TutorProfile {
+  id              String             @id @default(cuid())
+  userId          String             @unique
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  headline        String
+  bio             String
+  photoUrl        String?
+  videoIntroUrl   String?
+  education       String
+  hourlyRate      Decimal            @default(60.0)
+  languages       String[]           @default(["English"])
+  timezone        String             @default("UTC")
+  rating          Float              @default(5.0)
+  reviewCount     Int                @default(0)
+  isVerified      Boolean            @default(false)
+  status          String             @default("active")
+  createdAt       DateTime           @default(now())
+
+  subjects        TutorSubject[]
+  curricula       TutorCurriculum[]
+  availabilities  TutorAvailability[]
+  bookings        Booking[]
+  reviews         Review[]
+  matches         TutorMatch[]
+}
+
+model Subject {
+  id              String             @id @default(cuid())
+  name            String             @unique
+  slug            String             @unique
+  description     String
+  icon            String?
+  category        String             @default("General")
+  active          Boolean            @default(true)
+  tutorSubjects   TutorSubject[]
+}
+
+model Curriculum {
+  id              String             @id @default(cuid())
+  name            String             @unique
+  slug            String             @unique
+  description     String
+  region          String?
+  active          Boolean            @default(true)
+  tutorCurricula  TutorCurriculum[]
+}
+
+model TutorSubject {
+  id              String             @id @default(cuid())
+  tutorId         String
+  tutor           TutorProfile       @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  subjectId       String
+  subject         Subject            @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([tutorId, subjectId])
+}
+
+model TutorCurriculum {
+  id              String             @id @default(cuid())
+  tutorId         String
+  tutor           TutorProfile       @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  curriculumId    String
+  curriculum      Curriculum         @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+
+  @@unique([tutorId, curriculumId])
+}
+
+model TutorAvailability {
+  id              String             @id @default(cuid())
+  tutorId         String
+  tutor           TutorProfile       @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  dayOfWeek       Int
+  startTime       String
+  endTime         String
+  timezone        String
+  isRecurring     Boolean            @default(true)
+}
+
+model Questionnaire {
+  id              String             @id @default(cuid())
+  version         String             @unique
+  title           String
+  description     String?
+  isActive        Boolean            @default(true)
+  questions       Question[]
+  responses       QuestionnaireResponse[]
+}
+
+model Question {
+  id              String             @id @default(cuid())
+  questionnaireId String
+  questionnaire   Questionnaire      @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  order           Int
+  text            String
+  subtext         String?
+  type            String             @default("SINGLE_CHOICE")
+  isRequired      Boolean            @default(true)
+  options         QuestionOption[]
+  answers         QuestionAnswer[]
+}
+
+model QuestionOption {
+  id              String             @id @default(cuid())
+  questionId      String
+  question        Question           @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  label           String
+  value           String
+  icon            String?
+  order           Int
+}
+
+model QuestionnaireResponse {
+  id              String             @id @default(cuid())
+  questionnaireId String
+  questionnaire   Questionnaire      @relation(fields: [questionnaireId], references: [id])
+  leadId          String?
+  lead            Lead?              @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  status          String             @default("COMPLETED")
+  answers         QuestionAnswer[]
+  createdAt       DateTime           @default(now())
+}
+
+model QuestionAnswer {
+  id              String             @id @default(cuid())
+  responseId      String
+  response        QuestionnaireResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  questionId      String
+  question        Question           @relation(fields: [questionId], references: [id])
+  value           String
+}
+
+model Lead {
+  id              String             @id @default(cuid())
+  name            String
+  email           String
+  phone           String?
+  source          String?            @default("website")
+  campaign        String?
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+  targetSubject   String?
+  gradeLevel      String?
+  studentType     String?
+  notes           String?
+  status          String             @default("NEW")
+  consentGiven    Boolean            @default(true)
+  createdAt       DateTime           @default(now())
+
+  responses       QuestionnaireResponse[]
+  matches         TutorMatch[]
+}
+
+model TutorMatch {
+  id              String             @id @default(cuid())
+  leadId          String?
+  lead            Lead?              @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  studentId       String?
+  student         StudentProfile?    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  tutorId         String
+  tutor           TutorProfile       @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  matchScore      Int                @default(95)
+  matchReasons    String[]
+  createdAt       DateTime           @default(now())
+}
+
+model Booking {
+  id              String             @id @default(cuid())
+  studentId       String
+  student         StudentProfile     @relation(fields: [studentId], references: [id])
+  tutorId         String
+  tutor           TutorProfile       @relation(fields: [tutorId], references: [id])
+  sessionType     String             @default("TRIAL")
+  scheduledAt     DateTime
+  timezone        String
+  durationMinutes Int                @default(60)
+  status          BookingStatus      @default(SCHEDULED)
+  createdAt       DateTime           @default(now())
+
+  sessions        Session[]
+  payments        Payment[]
+}
+
+model Payment {
+  id              String             @id @default(cuid())
+  bookingId       String?
+  booking         Booking?           @relation(fields: [bookingId], references: [id])
+  amount          Decimal
+  currency        String             @default("USD")
+  provider        String             @default("stripe")
+  transactionRef  String?
+  status          PaymentStatus      @default(PENDING)
+  createdAt       DateTime           @default(now())
+}
+
+model Session {
+  id              String             @id @default(cuid())
+  bookingId       String
+  booking         Booking            @relation(fields: [bookingId], references: [id])
+  actualStart     DateTime?
+  actualEnd       DateTime?
+  attendance      String             @default("SCHEDULED")
+  tutorNotes      String?
+  classroomUrl    String?
+  status          String             @default("SCHEDULED")
+}
+
+model Review {
+  id              String             @id @default(cuid())
+  userId          String?
+  user            User?              @relation("UserReviews", fields: [userId], references: [id])
+  reviewerName    String
+  reviewerRole    String             @default("Parent")
+  tutorId         String?
+  tutor           TutorProfile?      @relation(fields: [tutorId], references: [id])
+  rating          Int                @default(5)
+  headline        String
+  comment         String
+  dateText        String
+  isVerified      Boolean            @default(true)
+  isApproved      Boolean            @default(true)
+  createdAt       DateTime           @default(now())
+}
+
+model Progress {
+  id              String             @id @default(cuid())
+  studentId       String
+  student         StudentProfile     @relation(fields: [studentId], references: [id])
+  subject         String
+  currentGrade    String?
+  targetGrade     String?
+  feedbackSummary String
+  metrics         Json?
+  updatedAt       DateTime           @updatedAt
+}
+
+model Message {
+  id              String             @id @default(cuid())
+  senderId        String
+  sender          User               @relation("SentMessages", fields: [senderId], references: [id])
+  recipientId     String
+  recipient       User               @relation("ReceivedMessages", fields: [recipientId], references: [id])
+  subject         String?
+  content         String
+  isRead          Boolean            @default(false)
+  createdAt       DateTime           @default(now())
+}
+
+model ConsentAudit {
+  id              String             @id @default(cuid())
+  userId          String?
+  user            User?              @relation(fields: [userId], references: [id])
+  consentType     String
+  version         String
+  ipAddress       String?
+  source          String
+  grantedAt       DateTime           @default(now())
+}
+
+model FAQ {
+  id              String             @id @default(cuid())
+  question        String
+  answer          String
+  order           Int                @default(0)
+  isActive        Boolean            @default(true)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model SuccessStory {
+  id              String             @id @default(cuid())
+  studentName     String
+  gradeRole       String
+  headline        String
+  quote           String
+  avatar          String?
+  isActive        Boolean            @default(true)
+  order           Int                @default(0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
