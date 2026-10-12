@@ -29,9 +29,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAssessment }) => {
           {/* Logo & Navigation Links */}
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/30 border border-brand-accent/40 group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(166,79,252,0.5)] transition-all flex-shrink-0">
-                <span className="font-extrabold text-sm tracking-tight">DB</span>
-              </div>
+              <img 
+                src="/images/DB_logo.png" 
+                alt="Doublebond DB Logo" 
+                className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105 flex-shrink-0 select-none drop-shadow-sm" 
+              />
               <img 
                 src="/images/doublebond-sketch-wordmark.svg" 
                 alt="Doublebond" 
