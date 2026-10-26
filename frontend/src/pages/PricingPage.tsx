@@ -98,10 +98,10 @@ export const PricingPage: React.FC = () => {
               </ul>
             </div>
             <a
-              href="tel:8884052553"
+              href="tel:+917747973798"
               className="mt-8 block text-center py-3.5 border-2 border-slate-200 text-slate-700 hover:border-brand-500 hover:text-brand-600 font-bold text-xs uppercase tracking-wider rounded-xl transition-all"
             >
-              Call 888.405.2553
+              Call +91 77479 73798
             </a>
           </div>
         </div>

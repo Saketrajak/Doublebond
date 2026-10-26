@@ -20,11 +20,11 @@ export const Footer: React.FC = () => {
             </p>
             <div className="pt-2 flex items-center gap-4">
               <a
-                href="tel:8884052553"
+                href="tel:+917747973798"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#a64ffc] hover:text-white transition-colors"
               >
                 <Phone className="w-4 h-4 text-[#a64ffc]" />
-                888.405.2553
+                +91 77479 73798
               </a>
               <span className="text-purple-400/40">|</span>
               <a

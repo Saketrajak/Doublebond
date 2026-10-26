@@ -80,10 +80,10 @@ export const HowItWorksSection: React.FC<HowItWorksSectionProps> = ({ steps, onS
               Get Custom Matched
             </button>
             <a
-              href="tel:8884052553"
+              href="tel:+917747973798"
               className="px-6 py-3.5 border-2 border-slate-200 text-slate-700 hover:border-brand-500 hover:text-brand-500 font-bold text-sm uppercase tracking-wider rounded-xl transition-all"
             >
-              Call 888.405.2553
+              Call +91 77479 73798
             </a>
           </div>
         </div>

@@ -29,15 +29,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAssessment }) => {
           {/* Logo & Navigation Links */}
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-2.5 group">
-              <img 
-                src="/images/DB_logo.png" 
-                alt="Doublebond DB Logo" 
-                className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105 flex-shrink-0 select-none drop-shadow-sm" 
+              <img
+                src="/images/DB_logo.png"
+                alt="Doublebond DB Logo"
+                className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105 flex-shrink-0 select-none drop-shadow-sm"
               />
-              <img 
-                src="/images/doublebond-sketch-wordmark.svg" 
-                alt="Doublebond" 
-                className="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] drop-shadow-sm select-none" 
+              <img
+                src="/images/doublebond-sketch-wordmark.svg"
+                alt="Doublebond"
+                className="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] drop-shadow-sm select-none"
               />
             </Link>
 
@@ -138,17 +138,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAssessment }) => {
           <div className="hidden lg:flex items-center gap-4">
             {/* Phone Button */}
             <a
-              href="tel:8884052553"
-              className="flex items-center gap-2 px-4 py-2 border-2 border-brand-500 text-brand-500 font-semibold text-sm rounded-full hover:bg-brand-500 hover:text-white hover:shadow-[0_0_15px_rgba(166,79,252,0.3)] transition-all"
+              href="tel:+917747973798"
+              className="group flex items-center gap-2 px-4 py-2 border-2 border-brand-500 text-brand-500 font-semibold text-sm rounded-full hover:bg-brand-500 hover:text-white hover:shadow-[0_0_15px_rgba(166,79,252,0.3)] transition-all whitespace-nowrap shrink-0"
             >
-              <Phone className="w-4 h-4 text-brand-500" />
-              <span>888.405.2553</span>
+              <Phone className="w-4 h-4 shrink-0 text-brand-500 group-hover:text-white transition-colors" />
+              <span className="tracking-wide">+91 77479 73798</span>
             </a>
 
             {/* Primary CTA: FIND YOUR TUTOR */}
             <button
               onClick={onOpenAssessment}
-              className="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md shadow-brand-500/30 hover:shadow-[0_0_20px_rgba(166,79,252,0.45)] border border-brand-accent/30 hover:border-brand-accent transition-all hover:-translate-y-0.5"
+              className="px-5 py-2.5 bg-brand-500 hover:bg-brand-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md shadow-brand-500/30 hover:shadow-[0_0_20px_rgba(166,79,252,0.45)] border border-brand-accent/30 hover:border-brand-accent transition-all hover:-translate-y-0.5"
             >
               FIND YOUR TUTOR
             </button>
@@ -240,11 +240,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAssessment }) => {
           </Link>
           <div className="border-t border-slate-100 pt-4 flex flex-col gap-3">
             <a
-              href="tel:8884052553"
-              className="flex items-center justify-center gap-2 py-2.5 border-2 border-brand-500 text-brand-500 font-bold rounded-xl"
+              href="tel:+917747973798"
+              className="group flex items-center justify-center gap-2 py-2.5 border-2 border-brand-500 text-brand-500 font-bold rounded-xl hover:bg-brand-500 hover:text-white transition-all"
             >
-              <Phone className="w-4 h-4" />
-              <span>888.405.2553</span>
+              <Phone className="w-4 h-4 shrink-0 text-brand-500 group-hover:text-white transition-colors" />
+              <span>+91 77479 73798</span>
             </a>
             <button
               onClick={() => {

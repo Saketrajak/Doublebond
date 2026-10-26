@@ -42,15 +42,15 @@ export const ContactPage: React.FC = () => {
 
             <div className="space-y-4 pt-4">
               <a
-                href="tel:8884052553"
+                href="tel:+917747973798"
                 className="flex items-center gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-slate-800 hover:border-brand-300 transition-colors"
               >
                 <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center shrink-0">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400 font-semibold uppercase">Call Us Toll-Free</div>
-                  <div className="text-sm font-bold text-slate-900">888.405.2553</div>
+                  <div className="text-xs text-slate-400 font-semibold uppercase">Call Us</div>
+                  <div className="text-sm font-bold text-slate-900">+91 77479 73798</div>
                 </div>
               </a>
 
