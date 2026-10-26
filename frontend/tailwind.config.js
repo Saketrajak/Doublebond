@@ -35,7 +35,17 @@ export default {
         'premium': '0 20px 40px -15px rgba(166, 79, 252, 0.25)',
         'glow': '0 0 25px -2px rgba(166, 79, 252, 0.45)',
         'glow-lg': '0 0 35px 2px rgba(166, 79, 252, 0.60)',
-      }
+      },
+      animation: {
+        scroll: 'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite',
+      },
+      keyframes: {
+        scroll: {
+          to: {
+            transform: 'translate(calc(-50% - 0.5rem))',
+          },
+        },
+      },
     },
   },
   plugins: [],
