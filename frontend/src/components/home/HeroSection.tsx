@@ -110,17 +110,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartAssessment }) =
 
           {/* Right Column: Floating Glassmorphic Testimonial Card */}
           <div className="lg:col-span-5 relative">
-            {/* Background decorative radiant blur */}
-            <div className="absolute -top-8 -right-8 w-72 h-72 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none -z-10" />
+            {/* Ambient Backlight Glow (Glass Caustics) */}
+            <div className="absolute -top-12 -right-12 w-80 h-80 bg-gradient-to-br from-brand-accent/25 via-purple-400/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse [animation-duration:8s]" />
+            <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-gradient-to-tr from-indigo-500/20 via-brand-500/15 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
-            <div className="relative bg-white/60 backdrop-blur-2xl rounded-3xl p-8 sm:p-10 border border-white/90 shadow-2xl shadow-brand-500/10 hover:shadow-brand-500/20 hover:border-brand-accent/40 transition-all duration-300">
-              {/* Quote icon */}
-              <div className="text-brand-accent mb-4">
-                <Quote className="w-12 h-12 fill-brand-accent/15 text-brand-accent" />
+            {/* Specular Liquid Glass Card Container */}
+            <div className="relative bg-gradient-to-b from-white/80 via-white/55 to-white/40 backdrop-blur-2xl rounded-3xl p-8 sm:p-10 border border-white/80 shadow-[0_20px_50px_rgba(49,3,92,0.10),inset_0_1px_1px_rgba(255,255,255,0.9),inset_0_-1px_1px_rgba(166,79,252,0.12)] hover:shadow-[0_25px_60px_rgba(166,79,252,0.20),inset_0_1px_2px_rgba(255,255,255,1)] hover:border-white transition-all duration-300 hover:-translate-y-1 group">
+              {/* Frosted Quote Icon Container */}
+              <div className="w-14 h-14 rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 flex items-center justify-center shadow-xs text-brand-accent mb-5 group-hover:scale-105 group-hover:bg-white/90 transition-all">
+                <Quote className="w-7 h-7 fill-brand-accent/20 text-brand-accent" />
               </div>
 
               {/* Headline */}
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug mb-3">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug mb-3 tracking-tight">
                 Best investment in my child's education
               </h2>
 
@@ -129,13 +131,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartAssessment }) =
                 "Not only did she improve in math, but every aspect of her 'student experience' got better—study habits, time management, and general attitude toward learning."
               </p>
 
-              {/* Rating & Author */}
-              <div className="flex items-center justify-between border-t border-slate-100/90 pt-4">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-base font-bold text-slate-900">5.0</span>
+              {/* Rating & Author Row */}
+              <div className="flex items-center justify-between border-t border-purple-100/60 pt-4">
+                {/* Frosted Glass Rating Badge */}
+                <div className="flex items-center gap-2 bg-white/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/80 shadow-xs">
+                  <span className="text-sm font-extrabold text-slate-900">5.0</span>
                   <div className="flex text-amber-400">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
                 </div>
@@ -144,9 +147,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartAssessment }) =
                 </div>
               </div>
 
-              {/* Verified badge */}
-              <div className="mt-4 flex items-center gap-1.5 text-xs text-emerald-600 font-semibold bg-emerald-50/90 border border-emerald-100 px-3 py-1.5 rounded-lg w-fit">
-                <ShieldCheck className="w-4 h-4" />
+              {/* Frosted Verified Parent Badge */}
+              <div className="mt-4 flex items-center gap-2 text-xs text-emerald-700 font-semibold bg-emerald-500/10 backdrop-blur-md border border-emerald-400/30 px-3.5 py-1.5 rounded-full shadow-xs w-fit">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 <span>Verified Parent Review</span>
               </div>
             </div>
