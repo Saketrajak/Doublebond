@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
+import { IntroAnimation } from './components/home/IntroAnimation';
 import { HomePage } from './pages/HomePage';
 import { FindTutorPage } from './pages/FindTutorPage';
 import { TutorsPage } from './pages/TutorsPage';
@@ -24,9 +25,14 @@ import { QuickAssessmentModal } from './components/home/QuickAssessmentModal';
 
 export const App: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-brand-500 selection:text-white">
+      {/* Intro Animation (Atomic Bond + Curtain Reveal on Landing Page) */}
+      {isLandingPage && <IntroAnimation />}
+
       {/* Global Navigation Header */}
       <Navbar onOpenAssessment={() => setModalOpen(true)} />
 
